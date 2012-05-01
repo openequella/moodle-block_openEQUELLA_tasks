@@ -22,6 +22,7 @@ class block_equella_tasks extends block_list {
 
 	function init() {
 		$this->title = get_string('pluginname', 'block_equella_tasks');
+		$this->version = 2011021500;
 	}
 
 	function get_content() {
