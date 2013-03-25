@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of the EQUELLA Moodle Integration - https://github.com/equella/moodle-block-tasks
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,4 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-$plugin->version = 2011021501;
+defined('MOODLE_INTERNAL') || die();
+
+$capabilities = array(
+
+    'block/equella_tasks:addinstance' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_BLOCK,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+
+        'clonepermissionsfrom' => 'moodle/site:manageblocks'
+    ),
+);
