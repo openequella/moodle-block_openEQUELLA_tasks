@@ -15,8 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-require_once($CFG->dirroot.'/mod/equella/common/lib.php');
-require_once($CFG->dirroot.'/mod/equella/common/soap.php');
+if (!defined('EQUELLA_LIB_API')) {
+    require_once(dirname(__FILE__) . '/common/lib.php');
+}
+if (!defined('EQUELLA_SOAP_API')) {
+    require_once(dirname(__FILE__) . '/common/equella_soap_api.php');
+}
 
 class block_equella_tasks extends block_list {
 
@@ -61,8 +65,8 @@ class block_equella_tasks extends block_list {
 			try {
 				$token = equella_getssotoken();
 				$equella = new EQUELLA(equella_soap_endpoint());
-				
-				// Check that 'getTaskFilterCounts' is available 
+
+				// Check that 'getTaskFilterCounts' is available
 				if( !$equella->hasMethod('getTaskFilterCounts') ) {
 					$cache->items[]= get_string('incompatible', 'block_equella_tasks');
 					$cache->icons[]= '<img src="'.$CFG->wwwroot.'/mod/equella/pix/icon-red.gif" class="icon" alt="" />';
