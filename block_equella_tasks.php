@@ -76,7 +76,7 @@ class block_equella_tasks extends block_list {
 					} else {
 						foreach( $filters as $filter ) {
 							$name = $filtersXml->nodeValue('name', $filter).' - '.$filtersXml->nodeValue('count', $filter);
-							$href = equella_append_with_token($filtersXml->nodeValue('href', $filter), $token);
+							$href = equella_appendtoken($filtersXml->nodeValue('href', $filter), $token);
 							$cache->items[]= '<a target="_blank" href="'.$href.'">'.$name.'</a>';
 						}
 					}
