@@ -20,80 +20,78 @@ require_once($CFG->dirroot.'/mod/equella/common/soap.php');
 
 class block_equella_tasks extends block_list {
 
-	function init() {
-		$this->title = get_string('pluginname', 'block_equella_tasks');
-	}
+    function init() {
+        $this->title = get_string('pluginname', 'block_equella_tasks');
+    }
 
-	function get_content() {
-		global $CFG, $COURSE, $SESSION;
+    function get_content() {
+        global $CFG, $COURSE, $SESSION;
 
-		if( $this->content !== NULL ) {
-			return $this->content;
-		}
+        if( $this->content !== NULL ) {
+            return $this->content;
+        }
 
-		if( empty($this->instance) || !isloggedin() || isguestuser() ) {
-			return null;
-		}
+        if( empty($this->instance) || !isloggedin() || isguestuser() ) {
+            return null;
+        }
 
-		$this->content = new stdClass;
-		$this->content->items = array();
-		$this->content->icons = array();
-		$this->content->footer = '';
+        $this->content = new stdClass;
+        $this->content->items = array();
+        $this->content->icons = array();
+        $this->content->footer = '';
 
-		if (empty($this->instance->pageid)) { // sticky
-			if (!empty($COURSE)) {
-				$this->instance->pageid = $COURSE->id;
-			}
-		}
+        if (empty($this->instance->pageid)) { // sticky
+            if (!empty($COURSE)) {
+                $this->instance->pageid = $COURSE->id;
+            }
+        }
 
-		$cache = null;
-		if( isset($SESSION->equella_tasks) ) {
-			$cache = $SESSION->equella_tasks;
-		}
+        $cache = null;
+        if( isset($SESSION->equella_tasks) ) {
+            $cache = $SESSION->equella_tasks;
+        }
 
-		if( empty($cache) or $cache->expires < time() ) {
+        if( empty($cache) or $cache->expires < time() ) {
 
-			$cache = new stdClass();
-			$cache->items = array();
-			$cache->icons = array();
-			$cache->expires = time() + (5 * 60);
+            $cache = new stdClass();
+            $cache->items = array();
+            $cache->icons = array();
+            $cache->expires = time() + (5 * 60);
 
-			try {
-				$token = equella_getssotoken();
-				$equella = new EQUELLA(equella_soap_endpoint());
-				
-				// Check that 'getTaskFilterCounts' is available 
-				if( !$equella->hasMethod('getTaskFilterCounts') ) {
-					$cache->items[]= get_string('incompatible', 'block_equella_tasks');
-					$cache->icons[]= '<img src="'.$CFG->wwwroot.'/mod/equella/pix/icon-red.gif" class="icon" alt="" />';
-				} else {
-					$equella->loginWithToken($token);
-					$filtersXml = $equella->getTaskFilterCounts(true);
-					$filters = $filtersXml->nodeList('/filters/filter');
+            try {
+                $token = equella_getssotoken();
+                $equella = new EQUELLA(equella_soap_endpoint());
 
-					if( $filters->length == 0 ) {
-						$cache->items[]= get_string('notasks', 'block_equella_tasks');
-					} else {
-						foreach( $filters as $filter ) {
-							$name = $filtersXml->nodeValue('name', $filter).' - '.$filtersXml->nodeValue('count', $filter);
-							$href = equella_appendtoken($filtersXml->nodeValue('href', $filter), $token);
-							$cache->items[]= '<a target="_blank" href="'.$href.'">'.$name.'</a>';
-						}
-					}
-				}
-			} catch( Exception $e ) {
-				$cache->items[]= get_string('error', 'block_equella_tasks');
-				$cache->icons[]= '<img src="'.$CFG->wwwroot.'/mod/equella/pix/icon-red.gif" class="icon" alt="" />';
-			}
+                // Check that 'getTaskFilterCounts' is available
+                if( !$equella->hasMethod('getTaskFilterCounts') ) {
+                    $cache->items[]= get_string('incompatible', 'block_equella_tasks');
+                    $cache->icons[]= '<img src="'.$CFG->wwwroot.'/mod/equella/pix/icon-red.gif" class="icon" alt="" />';
+                } else {
+                    $equella->loginWithToken($token);
+                    $filtersXml = $equella->getTaskFilterCounts(true);
+                    $filters = $filtersXml->nodeList('/filters/filter');
 
-			$SESSION->equella_tasks = $cache;
-		}
+                    if( $filters->length == 0 ) {
+                        $cache->items[]= get_string('notasks', 'block_equella_tasks');
+                    } else {
+                        foreach( $filters as $filter ) {
+                            $name = $filtersXml->nodeValue('name', $filter).' - '.$filtersXml->nodeValue('count', $filter);
+                            $href = equella_appendtoken($filtersXml->nodeValue('href', $filter), $token);
+                            $cache->items[]= '<a target="_blank" href="'.$href.'">'.$name.'</a>';
+                        }
+                    }
+                }
+            } catch( Exception $e ) {
+                $cache->items[]= get_string('error', 'block_equella_tasks');
+                $cache->icons[]= '<img src="'.$CFG->wwwroot.'/mod/equella/pix/icon-red.gif" class="icon" alt="" />';
+            }
 
-		$this->content->items = $cache->items;
-		$this->content->icons = $cache->icons;
+            $SESSION->equella_tasks = $cache;
+        }
 
-		return $this->content;
-	}
+        $this->content->items = $cache->items;
+        $this->content->icons = $cache->icons;
+
+        return $this->content;
+    }
 }
-
-?>
