@@ -26,3 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->version = 2011021501;
 $plugin->component = 'block_equella_tasks'; // Full name of the plugin (used for diagnostics)
+$plugin->dependencies = array(
+    'mod_equella' => 2015042000
+);
