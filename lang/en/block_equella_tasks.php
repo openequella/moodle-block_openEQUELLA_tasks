@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-$string['pluginname'] = 'EQUELLA Tasks';
-$string['incompatible'] = 'This version of EQUELLA is incompatible with this block';
-$string['error'] = 'There has been an error connecting to EQUELLA.  Will try again in 5 minutes.';
+$string['pluginname'] = 'openEQUELLA Tasks';
+$string['incompatible'] = 'This version of openEQUELLA is incompatible with this block';
+$string['error'] = 'There has been an error connecting to openEQUELLA.  Will try again in 5 minutes.';
 $string['notasks'] = 'You currently have no tasks';
 
 ?>
