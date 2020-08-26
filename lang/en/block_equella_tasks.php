@@ -19,5 +19,4 @@ $string['pluginname'] = 'openEQUELLA Tasks';
 $string['incompatible'] = 'This version of openEQUELLA is incompatible with this block';
 $string['error'] = 'There has been an error connecting to openEQUELLA.  Will try again in 5 minutes.';
 $string['notasks'] = 'You currently have no tasks';
-
-?>
+$string['privacy:metadata'] = "The TASKS block does not store any data - it uses shared secret to interact with openEQUELLA.";
