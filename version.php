@@ -24,5 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2011021501;
+$plugin->version = 2020032500;
 $plugin->component = 'block_equella_tasks'; // Full name of the plugin (used for diagnostics)
+$plugin->release = "1.0.0";
