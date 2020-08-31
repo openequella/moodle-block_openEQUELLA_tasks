@@ -1,6 +1,12 @@
 Moodle block for viewing your openEQUELLA tasks
 =============
 
+Installation
+------------
+- Unzip the archive
+- Rename the folder to "equella_tasks"
+- Copy "equella_tasks" folder to {$MOODLE}/blocks/ 
+
 Requirements
 ------------
 
